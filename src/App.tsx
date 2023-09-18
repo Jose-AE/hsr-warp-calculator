@@ -11,6 +11,8 @@ import {
   useColorModeValue,
   FormLabel,
   Image,
+  Box,
+  FormHelperText,
 } from "@chakra-ui/react";
 
 function App() {
@@ -38,17 +40,77 @@ function App() {
           p={6}
           my={12}
         >
+          {/*---------------------------Warps--------------------------------------*/}
+          <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
+            <Flex alignItems="center" justify={"center"}>
+              <Text userSelect={"none"} mr={"5px"}>
+                Saved Warps
+              </Text>
+              <Image
+                h={5}
+                w={5}
+                src="https://i.imgur.com/zeHJj2V.png"
+                alt="Cone"
+              />
+            </Flex>
+          </Box>
           <FormControl>
-            <Image
-              h={5}
-              w={5}
-              src="https://bit.ly/dan-abramov"
-              alt="Dan Abramov"
-            />
-            <FormLabel>Saved Warps</FormLabel>
-
-            <Input type="number" />
+            <Input placeholder="0" autoComplete="off" type="number" />
           </FormControl>
+
+          {/*---------------------------Character --------------------------------------*/}
+          <Flex gap={5}>
+            <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
+              <Flex alignItems="center" justify={"center"}>
+                <Text userSelect={"none"} mr={"5px"}>
+                  Charecter
+                </Text>
+                <Image
+                  h={5}
+                  w={5}
+                  src="https://i.imgur.com/BHGnYJU.png"
+                  alt="Char"
+                />
+              </Flex>
+            </Box>
+          </Flex>
+
+          <Flex gap={5}>
+            <FormControl>
+              <Input placeholder="0" autoComplete="off" type="number" />
+              <FormHelperText>Banner Pity</FormHelperText>
+            </FormControl>
+            <FormControl>
+              <Input placeholder="0" autoComplete="off" type="number" />
+              <FormHelperText>Wanted Copies</FormHelperText>
+            </FormControl>
+          </Flex>
+
+          {/*---------------------------Light cone--------------------------------------*/}
+          <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
+            <Flex alignItems="center" justify={"center"}>
+              <Text userSelect={"none"} mr={"5px"}>
+                Light Cone
+              </Text>
+              <Image
+                h={5}
+                w={5}
+                src="https://i.imgur.com/fewuoHv.png"
+                alt="Cone"
+              />
+            </Flex>
+          </Box>
+
+          <Flex gap={5}>
+            <FormControl>
+              <Input placeholder="0" autoComplete="off" type="number" />
+              <FormHelperText>Banner Pity</FormHelperText>
+            </FormControl>
+            <FormControl>
+              <Input placeholder="0" autoComplete="off" type="number" />
+              <FormHelperText>Wanted Copies</FormHelperText>
+            </FormControl>
+          </Flex>
 
           <Stack spacing={6}>
             <Button
