@@ -4,15 +4,15 @@ import {
   Button,
   FormControl,
   Flex,
-  Heading,
   Input,
   Stack,
   Text,
   useColorModeValue,
-  FormLabel,
+  Tooltip,
   Image,
   Box,
   FormHelperText,
+  Checkbox,
 } from "@chakra-ui/react";
 
 function App() {
@@ -21,6 +21,8 @@ function App() {
   const [conePity, setConePity] = useState(0);
   const [coneGuaranteed, setConeGuaranteed] = useState(false);
   const [characterGuaranteed, setCharacterGuaranteed] = useState(false);
+  const [characterCopies, setCharacterCopies] = useState(0);
+  const [coneCopies, setConeCopies] = useState(0);
 
   return (
     <>
@@ -55,7 +57,14 @@ function App() {
             </Flex>
           </Box>
           <FormControl>
-            <Input placeholder="0" autoComplete="off" type="number" />
+            <Input
+              onChange={(e) => {
+                setWarps(parseInt(e.target.value, 10));
+              }}
+              placeholder="0"
+              autoComplete="off"
+              type="number"
+            />
           </FormControl>
 
           {/*---------------------------Character --------------------------------------*/}
@@ -77,13 +86,50 @@ function App() {
 
           <Flex gap={5}>
             <FormControl>
-              <Input placeholder="0" autoComplete="off" type="number" />
+              <Input
+                onChange={(e) => {
+                  setCharecterPity(parseInt(e.target.value, 10));
+                }}
+                placeholder="0"
+                autoComplete="off"
+                type="number"
+              />
               <FormHelperText>Banner Pity</FormHelperText>
             </FormControl>
             <FormControl>
-              <Input placeholder="0" autoComplete="off" type="number" />
+              <Input
+                onChange={(e) => {
+                  setCharacterCopies(parseInt(e.target.value, 10));
+                }}
+                placeholder="0"
+                autoComplete="off"
+                type="number"
+              />
               <FormHelperText>Wanted Copies</FormHelperText>
             </FormControl>
+            <Tooltip
+              hasArrow
+              label="If your last 5★ wasn't the promotial character"
+              fontSize="sm"
+            >
+              <Box
+                p={"5px"}
+                h={"40px"}
+                borderWidth="1px"
+                borderRadius={"md"}
+                w={"100%"}
+              >
+                <Checkbox
+                  onChange={() => {
+                    setCharacterGuaranteed(!characterGuaranteed);
+                  }}
+                  ml={"2px"}
+                  mt={"2px"}
+                >
+                  Guaranteed
+                </Checkbox>
+              </Box>
+            </Tooltip>
           </Flex>
 
           {/*---------------------------Light cone--------------------------------------*/}
@@ -103,24 +149,69 @@ function App() {
 
           <Flex gap={5}>
             <FormControl>
-              <Input placeholder="0" autoComplete="off" type="number" />
+              <Input
+                onChange={(e) => {
+                  setConePity(parseInt(e.target.value, 10));
+                }}
+                placeholder="0"
+                autoComplete="off"
+                type="number"
+              />
               <FormHelperText>Banner Pity</FormHelperText>
             </FormControl>
             <FormControl>
-              <Input placeholder="0" autoComplete="off" type="number" />
+              <Input
+                onChange={(e) => {
+                  setConeCopies(parseInt(e.target.value, 10));
+                }}
+                placeholder="0"
+                autoComplete="off"
+                type="number"
+              />
               <FormHelperText>Wanted Copies</FormHelperText>
             </FormControl>
+            <Tooltip
+              hasArrow
+              label="If your last 5★ wasn't the promotial light cone"
+              fontSize="sm"
+            >
+              <Box
+                p={"5px"}
+                h={"40px"}
+                borderWidth="1px"
+                borderRadius={"md"}
+                w={"100%"}
+              >
+                <Checkbox
+                  onChange={() => {
+                    setConeGuaranteed(!coneGuaranteed);
+                  }}
+                  ml={"2px"}
+                  mt={"2px"}
+                >
+                  Guaranteed
+                </Checkbox>
+              </Box>
+            </Tooltip>
           </Flex>
 
           <Stack spacing={6}>
             <Button
+              isDisabled={
+                !(
+                  warps > 0 &&
+                  charecterPity >= 0 &&
+                  conePity >= 0 &&
+                  (characterCopies > 0 || coneCopies > 0)
+                )
+              }
               bg={"blue.400"}
               color={"white"}
               _hover={{
                 bg: "blue.500",
               }}
             >
-              Request Reset
+              Calculate
             </Button>
           </Stack>
         </Stack>
