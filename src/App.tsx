@@ -24,7 +24,7 @@ import { CalculateWarpProbability } from "./utils/CalculateWarpProbability";
 
 function App() {
   const [warps, setWarps] = useState(0);
-  const [charecterPity, setCharecterPity] = useState(0);
+  const [characterPity, setCharacterPity] = useState(0);
   const [conePity, setConePity] = useState(0);
   const [coneGuaranteed, setConeGuaranteed] = useState(false);
   const [characterGuaranteed, setCharacterGuaranteed] = useState(false);
@@ -111,7 +111,7 @@ function App() {
             <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
               <Flex alignItems="center" justify={"center"}>
                 <Text userSelect={"none"} mr={"5px"}>
-                  Charecter
+                  Character
                 </Text>
                 <Image
                   h={5}
@@ -129,7 +129,7 @@ function App() {
                 onChange={(e) => {
                   setChance(-1);
                   const value = parseInt(e.target.value, 10);
-                  setCharecterPity(isNaN(value) ? 0 : value);
+                  setCharacterPity(isNaN(value) ? 0 : value);
                 }}
                 placeholder="0"
                 autoComplete="off"
@@ -292,7 +292,7 @@ function App() {
               isDisabled={
                 !(
                   warps > 0 &&
-                  charecterPity >= 0 &&
+                  characterPity >= 0 &&
                   conePity >= 0 &&
                   (characterCopies > 0 || coneCopies > 0)
                 )
@@ -308,7 +308,7 @@ function App() {
                 setLoading(true);
                 CalculateWarpProbability(
                   warps,
-                  charecterPity,
+                  characterPity,
                   conePity,
                   coneGuaranteed,
                   characterGuaranteed,
