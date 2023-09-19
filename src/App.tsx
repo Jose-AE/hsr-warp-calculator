@@ -148,7 +148,13 @@ function App() {
                 autoComplete="off"
                 type="number"
               />
-              <FormHelperText>Wanted Copies</FormHelperText>
+              <Tooltip
+                hasArrow
+                label="Desired quantity of 5★ Limited Character"
+                fontSize="sm"
+              >
+                <FormHelperText>Wanted Copies</FormHelperText>
+              </Tooltip>
             </FormControl>
             <Tooltip
               hasArrow
@@ -216,7 +222,13 @@ function App() {
                 autoComplete="off"
                 type="number"
               />
-              <FormHelperText>Wanted Copies</FormHelperText>
+              <Tooltip
+                hasArrow
+                label="Desired quantity of 5★ Limited Light Cone"
+                fontSize="sm"
+              >
+                <FormHelperText>Wanted Copies</FormHelperText>
+              </Tooltip>
             </FormControl>
             <Tooltip
               hasArrow
