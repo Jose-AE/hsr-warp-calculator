@@ -19,7 +19,6 @@ import {
   CardHeader,
   CardBody,
   Badge,
-  Icon,
 } from "@chakra-ui/react";
 import { CalculateWarpProbability } from "./utils/CalculateWarpProbability";
 
