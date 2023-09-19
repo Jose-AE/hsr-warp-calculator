@@ -19,7 +19,7 @@ export function CalculateWarpProbability(
   return new Promise<number>((resolve) => {
     let successesfullSimulations = 0;
 
-    let NUM_SIMULATIONS = warps > 10000 ? 100 : 100000; //adjust depending on how many warps
+    let NUM_SIMULATIONS = warps > 10000 ? 100 : 10000; //adjust depending on how many warps
 
     for (let i = 0; i < NUM_SIMULATIONS; i++) {
       //if (i % 100 === 0) console.log(`${(i / NUM_SIMULATIONS) * 100}%`);

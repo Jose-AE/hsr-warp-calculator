@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { FaGithub } from "react-icons/fa";
 import {
   Button,
   FormControl,
@@ -18,6 +19,7 @@ import {
   CardHeader,
   CardBody,
   Badge,
+  Icon,
 } from "@chakra-ui/react";
 import { CalculateWarpProbability } from "./utils/CalculateWarpProbability";
 
@@ -38,6 +40,24 @@ function App() {
 
   return (
     <>
+      <Box
+        position="fixed"
+        bottom={0} // Position at the bottom
+        right={0} // Position at the right
+        p={2}
+        m="5px"
+        borderRadius="100%"
+        zIndex={9999}
+        bgColor="rgba(0, 0, 0, 0.5)"
+      >
+        <a
+          href="https://github.com/Jose-AE/hsr-warp-calculator"
+          target="_blank"
+        >
+          <FaGithub />
+        </a>
+      </Box>
+
       <Flex
         minH={"100vh"}
         align={"center"}
@@ -68,17 +88,24 @@ function App() {
               />
             </Flex>
           </Box>
-          <FormControl>
-            <Input
-              onChange={(e) => {
-                setChance(-1);
-                setWarps(parseInt(e.target.value, 10));
-              }}
-              placeholder="0"
-              autoComplete="off"
-              type="number"
-            />
-          </FormControl>
+
+          <Tooltip
+            hasArrow
+            label="Increasing the number of warps will exponentially extend the simulation time required for pull calculations. To optimize performance, aim to maintain the number of warps within the range of 1 to 10,000"
+            fontSize="sm"
+          >
+            <FormControl>
+              <Input
+                onChange={(e) => {
+                  setChance(-1);
+                  setWarps(parseInt(e.target.value, 10));
+                }}
+                placeholder="0"
+                autoComplete="off"
+                type="number"
+              />
+            </FormControl>
+          </Tooltip>
 
           {/*---------------------------Character --------------------------------------*/}
           <Flex gap={5}>
