@@ -13,7 +13,13 @@ import {
   Box,
   FormHelperText,
   Checkbox,
+  Heading,
+  Card,
+  CardHeader,
+  CardBody,
+  Badge,
 } from "@chakra-ui/react";
+import { CalculateWarpProbability } from "./utils/CalculateWarpProbability";
 
 function App() {
   const [warps, setWarps] = useState(0);
@@ -23,6 +29,12 @@ function App() {
   const [characterGuaranteed, setCharacterGuaranteed] = useState(false);
   const [characterCopies, setCharacterCopies] = useState(0);
   const [coneCopies, setConeCopies] = useState(0);
+
+  const [chance, setChance] = useState(-1);
+
+  const [loading, setLoading] = useState(false);
+
+  localStorage.setItem("chakra-ui-color-mode", "dark"); //set dark mode
 
   return (
     <>
@@ -46,7 +58,7 @@ function App() {
           <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
             <Flex alignItems="center" justify={"center"}>
               <Text userSelect={"none"} mr={"5px"}>
-                Saved Warps
+                Warps
               </Text>
               <Image
                 h={5}
@@ -59,6 +71,7 @@ function App() {
           <FormControl>
             <Input
               onChange={(e) => {
+                setChance(-1);
                 setWarps(parseInt(e.target.value, 10));
               }}
               placeholder="0"
@@ -88,7 +101,9 @@ function App() {
             <FormControl>
               <Input
                 onChange={(e) => {
-                  setCharecterPity(parseInt(e.target.value, 10));
+                  setChance(-1);
+                  const value = parseInt(e.target.value, 10);
+                  setCharecterPity(isNaN(value) ? 0 : value);
                 }}
                 placeholder="0"
                 autoComplete="off"
@@ -99,7 +114,9 @@ function App() {
             <FormControl>
               <Input
                 onChange={(e) => {
-                  setCharacterCopies(parseInt(e.target.value, 10));
+                  setChance(-1);
+                  const value = parseInt(e.target.value, 10);
+                  setCharacterCopies(isNaN(value) ? 0 : value);
                 }}
                 placeholder="0"
                 autoComplete="off"
@@ -121,6 +138,7 @@ function App() {
               >
                 <Checkbox
                   onChange={() => {
+                    setChance(-1);
                     setCharacterGuaranteed(!characterGuaranteed);
                   }}
                   ml={"2px"}
@@ -151,7 +169,9 @@ function App() {
             <FormControl>
               <Input
                 onChange={(e) => {
-                  setConePity(parseInt(e.target.value, 10));
+                  setChance(-1);
+                  const value = parseInt(e.target.value, 10);
+                  setConePity(isNaN(value) ? 0 : value);
                 }}
                 placeholder="0"
                 autoComplete="off"
@@ -162,7 +182,9 @@ function App() {
             <FormControl>
               <Input
                 onChange={(e) => {
-                  setConeCopies(parseInt(e.target.value, 10));
+                  setChance(-1);
+                  const value = parseInt(e.target.value, 10);
+                  setConeCopies(isNaN(value) ? 0 : value);
                 }}
                 placeholder="0"
                 autoComplete="off"
@@ -184,6 +206,7 @@ function App() {
               >
                 <Checkbox
                   onChange={() => {
+                    setChance(-1);
                     setConeGuaranteed(!coneGuaranteed);
                   }}
                   ml={"2px"}
@@ -195,6 +218,49 @@ function App() {
             </Tooltip>
           </Flex>
 
+          <Card
+            borderColor={"whiteAlpha.300"}
+            display={chance < 0 ? "none" : "flex"}
+            borderWidth="1px"
+            align="center"
+          >
+            <CardHeader>
+              <Badge colorScheme="green">
+                <Heading size="lg">
+                  {Math.round(chance * 100 * 1000) / 1000}%
+                </Heading>
+              </Badge>
+            </CardHeader>
+            <CardBody>
+              {coneCopies > 0 && characterCopies > 0 ? (
+                <Text>
+                  Is the probability of you obtaining{" "}
+                  <Badge colorScheme="gray"> {characterCopies}</Badge> copie(s)
+                  of the character from the featured banner and{" "}
+                  <Badge colorScheme="gray"> {coneCopies}</Badge>
+                  copie(s) of the light cone in the featured banner if you were
+                  to do <Badge colorScheme="gray"> {warps}</Badge> warp(s),
+                  first starting in the character banner until you get all
+                  desired copies and then moving to the light cone banner
+                </Text>
+              ) : coneCopies > 0 ? (
+                <Text>
+                  Is the probability of you obtaining{" "}
+                  <Badge colorScheme="gray"> {coneCopies}</Badge> copie(s) of
+                  the light cone in the featured banner if you were to do{" "}
+                  <Badge colorScheme="gray"> {warps}</Badge> warp(s),
+                </Text>
+              ) : (
+                <Text>
+                  Is the probability of you obtaining{" "}
+                  <Badge colorScheme="gray"> {characterCopies}</Badge> copie(s)
+                  of the character in the featured banner if you were to do{" "}
+                  <Badge colorScheme="gray"> {warps}</Badge> warp(s),
+                </Text>
+              )}
+            </CardBody>
+          </Card>
+
           <Stack spacing={6}>
             <Button
               isDisabled={
@@ -205,10 +271,27 @@ function App() {
                   (characterCopies > 0 || coneCopies > 0)
                 )
               }
+              isLoading={loading}
               bg={"blue.400"}
               color={"white"}
               _hover={{
                 bg: "blue.500",
+              }}
+              onClick={() => {
+                //console.log(`warps: ${warps} Waanted coe${coneCopies}`);
+                setLoading(true);
+                CalculateWarpProbability(
+                  warps,
+                  charecterPity,
+                  conePity,
+                  coneGuaranteed,
+                  characterGuaranteed,
+                  characterCopies,
+                  coneCopies
+                ).then((res) => {
+                  setChance(res);
+                  setLoading(false);
+                });
               }}
             >
               Calculate
