@@ -47,7 +47,7 @@ export function CalculateWarpProbability(
           //roll and see if you get 5 star
           if (
             randomValue < currFiveStarChance ||
-            currCharPity === CHARACTER_PITY
+            currCharPity + 1 === CHARACTER_PITY
           ) {
             //check if limited is garanteed
             if (
@@ -74,11 +74,14 @@ export function CalculateWarpProbability(
         } else {
           //change curr rng
           currFiveStarChance +=
-            SOFT_PITY_INCREMENT * Math.max(currCharPity - CONE_SOFT_PITY, 0);
+            SOFT_PITY_INCREMENT * Math.max(currConePity - CONE_SOFT_PITY, 0);
           ////
 
           //roll and see if you get 5 star
-          if (randomValue < currFiveStarChance || currConePity === CONE_PITY) {
+          if (
+            randomValue < currFiveStarChance ||
+            currConePity + 1 === CONE_PITY
+          ) {
             //check if limited is garanteed
             if (currConeGuaranteed || Math.random() < LIMITED_CONE_CHANCE) {
               coneSuccesses++;
