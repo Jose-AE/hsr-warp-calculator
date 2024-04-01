@@ -22,6 +22,8 @@ import {
 } from "@chakra-ui/react";
 import { CalculateWarpProbability } from "./utils/CalculateWarpProbability";
 
+const DEFAULT_NUM_SIMULATIONS = 100000;
+
 function App() {
   const [warps, setWarps] = useState(0);
   const [characterPity, setCharacterPity] = useState(0);
@@ -30,6 +32,7 @@ function App() {
   const [characterGuaranteed, setCharacterGuaranteed] = useState(false);
   const [characterCopies, setCharacterCopies] = useState(0);
   const [coneCopies, setConeCopies] = useState(0);
+  const [numSimulations, setNumSimulations] = useState(DEFAULT_NUM_SIMULATIONS);
 
   const [chance, setChance] = useState(-1);
 
@@ -77,34 +80,52 @@ function App() {
           <Box py={"5px"} borderWidth="1px" borderRadius={"md"} w={"100%"}>
             <Flex alignItems="center" justify={"center"}>
               <Text userSelect={"none"} mr={"5px"}>
-                Warps
+                Settings
               </Text>
               <Image
                 h={5}
                 w={5}
-                src="https://i.imgur.com/zeHJj2V.png"
+                src="https://i.imgur.com/OZh2gva.png"
                 alt="Cone"
               />
             </Flex>
           </Box>
 
-          <Tooltip
-            hasArrow
-            label="Increasing the number of warps will exponentially extend the simulation time required for pull calculations. To optimize performance, aim to maintain the number of warps within the range of 1 to 10,000"
-            fontSize="sm"
-          >
-            <FormControl>
-              <Input
-                onChange={(e) => {
-                  setChance(-1);
-                  setWarps(parseInt(e.target.value, 10));
-                }}
-                placeholder="0"
-                autoComplete="off"
-                type="number"
-              />
-            </FormControl>
-          </Tooltip>
+          <Flex gap={5}>
+            <Tooltip hasArrow label="Number of warps to make" fontSize="sm">
+              <FormControl>
+                <Input
+                  onChange={(e) => {
+                    setChance(-1);
+                    setWarps(parseInt(e.target.value, 10));
+                  }}
+                  placeholder="0"
+                  autoComplete="off"
+                  type="number"
+                />
+                <FormHelperText>Warps</FormHelperText>
+              </FormControl>
+            </Tooltip>
+
+            <Tooltip
+              hasArrow
+              label="Increasing the number of simulations will yield more accurate results but will extend the time required for warp calculations. The more warps you make the longer each simulation takes. Leave default value for best results"
+              fontSize="sm"
+            >
+              <FormControl>
+                <Input
+                  defaultValue={DEFAULT_NUM_SIMULATIONS}
+                  onChange={(e) => {
+                    setChance(-1);
+                    setNumSimulations(parseInt(e.target.value, 10));
+                  }}
+                  autoComplete="off"
+                  type="number"
+                />
+                <FormHelperText>Simulations</FormHelperText>
+              </FormControl>
+            </Tooltip>
+          </Flex>
 
           {/*---------------------------Character --------------------------------------*/}
           <Flex gap={5}>
@@ -306,6 +327,7 @@ function App() {
                   warps > 0 &&
                   characterPity >= 0 &&
                   conePity >= 0 &&
+                  numSimulations > 0 &&
                   (characterCopies > 0 || coneCopies > 0)
                 )
               }
@@ -325,7 +347,8 @@ function App() {
                   coneGuaranteed,
                   characterGuaranteed,
                   characterCopies,
-                  coneCopies
+                  coneCopies,
+                  numSimulations
                 ).then((res) => {
                   setChance(res);
                   setLoading(false);

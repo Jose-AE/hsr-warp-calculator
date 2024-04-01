@@ -1,10 +1,11 @@
-const FIVE_STAR_CHANCE = 0.006;
+const FIVE_STAR_CHARACTER_CHANCE = 0.006;
+const FIVE_STAR_CONE_CHANCE = 0.008;
 const CHARACTER_SOFT_PITY = 74;
 const CONE_SOFT_PITY = 64;
 const CHARACTER_PITY = 90;
 const CONE_PITY = 80;
 const LIMITED_CONE_CHANCE = 0.75;
-const LIMITED_CHARACTER_CHANCE = 0.5;
+const LIMITED_CHARACTER_CHANCE = 0.5; //Chance of getting the limited char when getting a 5 star (50%)
 const SOFT_PITY_INCREMENT = 0.06;
 
 export function CalculateWarpProbability(
@@ -14,14 +15,13 @@ export function CalculateWarpProbability(
   coneGuaranteed: boolean,
   characterGuaranteed: boolean,
   characterCopies: number,
-  coneCopies: number
+  coneCopies: number,
+  numSimulations: number
 ): Promise<number> {
   return new Promise<number>((resolve) => {
     let successesfullSimulations = 0;
 
-    let NUM_SIMULATIONS = warps > 10000 ? 100 : 10000; //adjust depending on how many warps
-
-    for (let i = 0; i < NUM_SIMULATIONS; i++) {
+    for (let i = 0; i < numSimulations; i++) {
       //if (i % 100 === 0) console.log(`${(i / NUM_SIMULATIONS) * 100}%`);
 
       let warpsLeft = warps;
@@ -35,7 +35,7 @@ export function CalculateWarpProbability(
       while (warpsLeft > 0) {
         //pull warps number of times
         const randomValue = Math.random(); // Generate a random number between 0 and 1
-        let currFiveStarChance = FIVE_STAR_CHANCE;
+        let currFiveStarChance = FIVE_STAR_CHARACTER_CHANCE;
 
         if (coneCopies > 0 ? charSuccesses < characterCopies : true) {
           //change curr rng
@@ -73,6 +73,8 @@ export function CalculateWarpProbability(
           ////if turn to roll for lightcone
         } else {
           //change curr rng
+          currFiveStarChance = FIVE_STAR_CONE_CHANCE;
+
           currFiveStarChance +=
             SOFT_PITY_INCREMENT * Math.max(currConePity - CONE_SOFT_PITY, 0);
           ////
@@ -106,7 +108,7 @@ export function CalculateWarpProbability(
         successesfullSimulations++;
     }
     // Calculate the estimated probability of getting exactly characterCopies successful outcomes
-    const estimatedProbability = successesfullSimulations / NUM_SIMULATIONS;
+    const estimatedProbability = successesfullSimulations / numSimulations;
     //console.log(`Chance:: ${estimatedProbability * 100}%`);
 
     resolve(estimatedProbability);
