@@ -4,6 +4,19 @@
 
 @layer base {
   html {
-    @apply bg-slate-900 text-white;
+    @apply bg-gray-800 text-white;
+  }
+}
+
+/*Remove arrows from number inputs*/
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }
