@@ -1,13 +1,14 @@
 "use client";
 // Tooltip.tsx
 import React, { useState } from "react";
+import { MdInfoOutline } from "react-icons/md";
 
 interface TooltipProps {
   text: string;
-  children: React.ReactNode;
+  iconSize?: number;
 }
 
-function Tooltip({ text, children }: TooltipProps) {
+function Tooltip({ text, iconSize = 5 }: TooltipProps) {
   const [show, setShow] = useState(false);
 
   return (
@@ -18,19 +19,29 @@ function Tooltip({ text, children }: TooltipProps) {
         onMouseLeave={() => setShow(false)}
         className="cursor-pointer"
       >
-        {children}
+        <MdInfoOutline className={`fill-gray-500 size-${iconSize}`} />
       </div>
 
-      {/* Tooltip */}
-      {
-        <div
-          className={`${
-            show ? "opacity-100" : "opacity-0"
-          }   absolute left-1/2 transform  -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-md text-gray-800 bg-gray-200 text-sm shadow-lg transition-opacity duration-2000 ease-in-out  `}
+      <p
+        className={`
+          ${show ? "opacity-100" : "opacity-0"}
+          transition-opacity absolute
+          duration-300
+           flex items-center justify-center w-48 
+           p-3 text-gray-600 -translate-x-1/2 bg-white 
+           rounded-lg shadow-lg -top-16 left-1/2  `}
+      >
+        <span className="truncate ">{text}</span>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6 absolute rotate-45 -translate-x-1/2 left-1/2 bottom-0.5 -mb-3 transform text-white fill-current"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
         >
-          {text}
-        </div>
-      }
+          <path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"></path>
+        </svg>
+      </p>
     </div>
   );
 }

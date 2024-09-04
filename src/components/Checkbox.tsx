@@ -2,14 +2,13 @@ import React, { ForwardedRef, forwardRef, InputHTMLAttributes } from "react";
 
 interface ICheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
   text: string;
+  id: string;
 }
 
 function Checkbox(
-  { text }: ICheckboxProps,
+  { text, id, ...props }: ICheckboxProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const id = text + Math.random();
-
   return (
     <label
       htmlFor={id}
@@ -21,7 +20,7 @@ function Checkbox(
          bg-gray-700"
     >
       <div className="flex flex-row">
-        <input ref={ref} id={id} type="checkbox" />
+        <input {...props} ref={ref} id={id} type="checkbox" />
         <p className="ml-2">{text}</p>
       </div>
     </label>

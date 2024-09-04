@@ -1,6 +1,6 @@
 import { ISimulationSettings } from "./interfaces";
 
-const settings: ISimulationSettings = {
+export const hsrSettings: ISimulationSettings = {
   characterPity: {
     hardPity: 90,
     softPity: 74,
@@ -24,5 +24,3 @@ const settings: ISimulationSettings = {
     limitedRate: 0.75,
   },
 };
-
-export default settings;

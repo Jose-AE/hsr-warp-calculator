@@ -6,18 +6,17 @@ import React, {
   InputHTMLAttributes,
   useState,
 } from "react";
+import Tooltip from "./Tooltip";
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string;
   label?: string;
+  tooltip?: string;
 }
 
 function Input(
   { className, label, type, ...props }: IInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div className={`${className} w-full `}>
       <input
@@ -31,9 +30,16 @@ function Input(
           focus:border-blue-300   `}
       />
 
-      <p className={`mt-1 text-sm text-gray-500  ${!label && "hidden"}`}>
-        {label}
-      </p>
+      <div className="flex items-center">
+        <div
+          className={` flex  gap-1 mt-1 text-sm text-gray-500  ${
+            !label && "hidden"
+          }`}
+        >
+          {label}
+          <Tooltip text="hola" />
+        </div>
+      </div>
     </div>
   );
 }

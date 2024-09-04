@@ -20,6 +20,8 @@ interface ISimulationData {
   currentLosses: number;
 }
 
+export const DEFAULT_NUM_SIMULATIONS = 10000;
+
 export function simulate(
   input: ISimulatorInput,
   settings: ISimulationSettings
