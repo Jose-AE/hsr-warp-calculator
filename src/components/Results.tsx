@@ -1,9 +1,11 @@
+import { ReactNode } from "react";
+
 export default function Results({
   probability,
-  text,
+  body,
 }: {
   probability: number;
-  text: string;
+  body: ReactNode;
 }) {
   return (
     <div className="p-5 border border-gray-600 rounded-md w-full flex-col flex items-center justify-center">
@@ -11,7 +13,7 @@ export default function Results({
         {Math.round(probability * 100 * 1000) / 1000}%
       </span>
 
-      <p className="mr-2 ">{text}</p>
+      <div className="mr-2 ">{body}</div>
     </div>
   );
 }

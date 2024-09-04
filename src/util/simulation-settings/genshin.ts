@@ -1,6 +1,6 @@
 import { ISimulationSettings } from "./interfaces";
 
-const settings: ISimulationSettings = {
+export const genshinSettings: ISimulationSettings = {
   characterRate: {
     baseRate: 0.006,
     guarantedAfter: 1,
@@ -16,7 +16,7 @@ const settings: ISimulationSettings = {
   weaponRate: {
     baseRate: 0.007,
     guarantedAfter: 1,
-    limitedOptions: 1,
+    limitedOptions: 2,
     limitedRate: 0.75,
   },
   weaponPity: {
@@ -25,5 +25,3 @@ const settings: ISimulationSettings = {
     softPityIncrement: 0.06,
   },
 };
-
-export default settings;

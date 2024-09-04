@@ -8,6 +8,7 @@ export default function Title({ text, icon }: { text: string; icon?: string }) {
 
       {icon && (
         <Image
+          priority
           width={1000}
           height={1000}
           className={`h-5 w-5   `}

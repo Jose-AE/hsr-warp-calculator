@@ -33,6 +33,7 @@ export default function Navbar({ children }: { children: ReactNode }) {
             href={link.href}
           >
             <Image
+              priority
               src={link.icon}
               alt="icon"
               width={10000}
@@ -44,7 +45,7 @@ export default function Navbar({ children }: { children: ReactNode }) {
           </Link>
         ))}
       </nav>
-      <main className="h-full overflow-auto ">{children}</main>
+      <main className="h-full overflow-auto no-scrollbar">{children}</main>
     </div>
   );
 }

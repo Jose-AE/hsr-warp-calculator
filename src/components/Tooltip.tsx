@@ -1,49 +1,35 @@
-"use client";
-// Tooltip.tsx
-import React, { useState } from "react";
-import { MdInfoOutline } from "react-icons/md";
+import { ReactNode } from "react";
 
-interface TooltipProps {
-  text: string;
-  iconSize?: number;
-}
-
-function Tooltip({ text, iconSize = 5 }: TooltipProps) {
-  const [show, setShow] = useState(false);
-
+export default function Tooltip({
+  message,
+  children,
+}: {
+  message: string;
+  children: ReactNode;
+}) {
   return (
-    <div className="relative inline-block">
-      {/* Target Element */}
+    <div className="group relative flex max-w-max flex-col items-center justify-center">
+      {children}
       <div
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        className="cursor-pointer"
-      >
-        <MdInfoOutline className={`fill-gray-500 size-${iconSize}`} />
-      </div>
-
-      <p
         className={`
-          ${show ? "opacity-100" : "opacity-0"}
-          transition-opacity absolute
-          duration-300
-           flex items-center justify-center w-48 
-           p-3 text-gray-600 -translate-x-1/2 bg-white 
-           rounded-lg shadow-lg -top-16 left-1/2  `}
+          z-10
+          absolute left-1/2 top-2  
+          ml-auto mr-auto min-w-max -translate-x-1/2
+          scale-0 transform rounded-lg px-3 py-2 text-xs
+          font-medium transition-all duration-300 group-hover:scale-100`}
       >
-        <span className="truncate ">{text}</span>
-
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6 absolute rotate-45 -translate-x-1/2 left-1/2 bottom-0.5 -mb-3 transform text-white fill-current"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"></path>
-        </svg>
-      </p>
+        <div className="flex max-w-xs flex-col items-center shadow-lg">
+          <div
+            className="
+            z-50
+          [clip-path:polygon(50%_0%,100%_100%,0%_100%)]
+          h-2 w-4 bg-gray-400"
+          ></div>
+          <div className="rounded bg-gray-400 p-2 text-center text-xs text-gray-800">
+            {message}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default Tooltip;

@@ -1,6 +1,6 @@
 import { ISimulationSettings } from "./interfaces";
 
-const settings: ISimulationSettings = {
+export const zzzSettings: ISimulationSettings = {
   characterPity: {
     hardPity: 90,
     softPity: 74,
@@ -18,11 +18,9 @@ const settings: ISimulationSettings = {
     softPityIncrement: 0.06,
   },
   weaponRate: {
-    baseRate: 0.008,
+    baseRate: 0.01,
     guarantedAfter: 1,
     limitedOptions: 1,
     limitedRate: 0.75,
   },
 };
-
-export default settings;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Rubik } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import GithubLink from "@/components/GithubLink";
+import Links from "@/components/Links";
 
 const font = Rubik({ subsets: ["latin"] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <Navbar>{children}</Navbar>
-        <GithubLink />
+        <Links />
       </body>
     </html>
   );

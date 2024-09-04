@@ -7,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import Tooltip from "./Tooltip";
+import { MdInfoOutline } from "react-icons/md";
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -14,7 +15,7 @@ interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 function Input(
-  { className, label, type, ...props }: IInputProps,
+  { className, label, type, tooltip, ...props }: IInputProps,
   ref: ForwardedRef<HTMLInputElement>
 ) {
   return (
@@ -30,15 +31,17 @@ function Input(
           focus:border-blue-300   `}
       />
 
-      <div className="flex items-center">
-        <div
-          className={` flex  gap-1 mt-1 text-sm text-gray-500  ${
-            !label && "hidden"
-          }`}
-        >
-          {label}
-          <Tooltip text="hola" />
-        </div>
+      <div
+        className={` flex  items-center  gap-1 mt-1 text-sm text-gray-500  ${
+          !label && "hidden"
+        }`}
+      >
+        {label}
+        {tooltip && (
+          <Tooltip message={tooltip}>
+            <MdInfoOutline />
+          </Tooltip>
+        )}
       </div>
     </div>
   );
