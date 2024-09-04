@@ -3,6 +3,7 @@ import { Inter, Rubik } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Links from "@/components/Links";
+import { Analytics } from "@vercel/analytics/react";
 
 const font = Rubik({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
+        <Analytics />
         <Navbar>{children}</Navbar>
         <Links />
       </body>
