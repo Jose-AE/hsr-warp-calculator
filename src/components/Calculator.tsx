@@ -228,9 +228,9 @@ export default function Calculator({
                   {customization.characterName.toLowerCase()} from the featured
                   banner and
                   <Tag text={weaponCopies} />
-                  {weaponCopies > 1 ? "copies" : "copy"} of the limited light
-                  cone in the featured banner if you were to do{" "}
-                  <Tag text={pulls} /> {customization.pullName}
+                  {weaponCopies > 1 ? "copies" : "copy"} of the limited{" "}
+                  {customization.weaponName} in the featured banner if you were
+                  to do <Tag text={pulls} /> {customization.pullName}
                   {pulls > 1 ? customization.pullConjugation : ""}, first
                   starting in the {customization.characterName.toLowerCase()}{" "}
                   banner until you get all desired copies and then moving to the{" "}

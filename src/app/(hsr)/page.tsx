@@ -16,7 +16,7 @@ export default function HSR() {
           characterName: "Character",
           pullName: "Warp",
           pullConjugation: "s",
-          weaponName: "Ligth Cone",
+          weaponName: "Light Cone",
         }}
         simulationSettings={hsrSettings}
       />

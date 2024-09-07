@@ -14,7 +14,7 @@ export const zzzSettings: ISimulationSettings = {
   },
   weaponPity: {
     hardPity: 80,
-    softPity: 64,
+    softPity: 65,
     softPityIncrement: 0.06,
   },
   weaponRate: {
