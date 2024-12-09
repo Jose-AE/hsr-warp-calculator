@@ -18,7 +18,7 @@ export function pull(
     limitedOptions: number,
     hardPity: number
   ): boolean | null {
-    const rate = baseRate + softPityIncrement * Math.max(pity - softPity, 0);
+    const rate = baseRate + softPityIncrement * Math.max(pity - softPity + 1, 0);
 
     if (pity + 1 == hardPity) return true; //when reach hard pity instant true
 
