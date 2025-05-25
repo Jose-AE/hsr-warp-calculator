@@ -73,13 +73,8 @@ export default function Calculator({
   }
 
   return (
-    <div className="w-full max-w-md  bg-gray-700 rounded-xl shadow-lg p-6 my-12 space-y-4">
-      <div
-        className=" 
-        select-none justify-center flex
-        border px-3 py-2 
-        rounded-md border-gray-600 bg-gray-700"
-      >
+    <div className="w-full max-w-md p-6 my-12 space-y-4 bg-gray-700 shadow-lg rounded-xl">
+      <div className="flex justify-center px-3 py-2 bg-gray-700 border border-gray-600 rounded-md select-none ">
         <Image
           priority
           alt="logo"
@@ -219,7 +214,7 @@ export default function Calculator({
         <Results
           probability={chance}
           body={
-            <span>
+            <span className="container mx-auto text-white bg-red-500">
               {weaponCopies > 0 && characterCopies > 0 && (
                 <>
                   Is the probability of you obtaining
@@ -270,7 +265,7 @@ export default function Calculator({
 
 function Tag({ text }: { text: string | number }) {
   return (
-    <span className=" select-none py-1 px-2 mx-1 rounded-md text-xs font-medium  shadow-sm bg-gray-600  text-white">
+    <span className="px-2 py-1 mx-1 text-xs font-medium text-white bg-gray-600 rounded-md shadow-xs select-none ">
       {text}
     </span>
   );

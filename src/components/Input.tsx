@@ -27,7 +27,7 @@ function Input(
         className={`${className} 
         w-full px-3 py-2 border 
         rounded-md border-gray-600 transition-colors
-         bg-gray-700 focus:outline-none
+         bg-gray-700 focus:outline-hidden
           focus:border-blue-300   `}
       />
 
