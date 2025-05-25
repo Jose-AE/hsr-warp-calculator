@@ -1,156 +1,210 @@
-import { ISimulatorInput, simulate } from "../util/simulator";
-import { ISimulationSettings } from "../util/simulation-settings/interfaces";
+import { GAMES } from "../lib/games";
+import {
+  ISimulatorInput,
+  simulate,
+  ISimulationSettings,
+} from "../lib/simulator";
 
-import { expect, test } from "vitest";
+import { expect, test, describe } from "vitest";
 
-const settings: ISimulationSettings = {
-  characterPity: {
-    hardPity: 90,
-    softPity: 74,
-    softPityIncrement: 0.06,
-  },
-  characterRate: {
-    baseRate: 0.006,
-    guarantedAfter: 1,
-    limitedOptions: 1,
-    limitedRate: 0.5,
-  },
-  weaponPity: {
-    hardPity: 80,
-    softPity: 64,
-    softPityIncrement: 0.06,
-  },
-  weaponRate: {
-    baseRate: 0.008,
-    guarantedAfter: 1,
-    limitedOptions: 2,
-    limitedRate: 0.75,
-  },
+const settings: ISimulationSettings = GAMES[0].simulationSettings;
+const TEST_SIMULATIONS = 100000;
+
+// Helper function to create base input
+const createBaseInput = (
+  overrides: Partial<ISimulatorInput> = {}
+): ISimulatorInput => ({
+  pulls: 1,
+  numSimulations: TEST_SIMULATIONS,
+  characterCopies: 1,
+  characterPity: 0,
+  isCharacterGuaranteed: false,
+  isWeaponGuaranteed: false,
+  weaponCopies: 0,
+  weaponPity: 0,
+  ...overrides,
+});
+
+// Helper function to assert percentage range
+const expectPercentageInRange = (result: number, min: number, max: number) => {
+  const percentage = result * 100;
+  expect(percentage).toBeGreaterThanOrEqual(min);
+  expect(percentage).toBeLessThanOrEqual(max);
 };
 
-const TEST_SIMULATIONS = 10000;
+describe("Single Pull Tests", () => {
+  test("single pull without guaranteed should have low success rate", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      isCharacterGuaranteed: false,
+    });
 
-test("Test with a single pull and no garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 1,
-    numSimulations: TEST_SIMULATIONS,
+    const result = simulate(input, settings);
+    expectPercentageInRange(result, 0.2, 0.4);
+  });
 
-    characterCopies: 1,
-    characterPity: 0,
-    isCharacterGuaranteed: false,
+  test("single pull with guaranteed should have low success rate", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      isCharacterGuaranteed: true,
+    });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+    const result = simulate(input, settings);
+    expectPercentageInRange(result, 0.5, 0.7);
+  });
 
-  const res = simulate(input, settings) * 100;
+  test("single pull at hard pity (90) should guarantee success", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      characterPity: 89, // At 89 pity, next pull is guaranteed
+      isCharacterGuaranteed: true,
+    });
 
-  //console.log(res);
-  expect(res).toBeLessThanOrEqual(0.4); // res <=
-  expect(res).toBeGreaterThanOrEqual(0.2); // res >=
+    const result = simulate(input, settings);
+    expect(result).toBe(1); // 100% success rate
+  });
 });
 
-test("Test with a single pull and garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 1,
-    numSimulations: TEST_SIMULATIONS,
+describe("Multi-Pull Tests with Guaranteed", () => {
+  test("60 pulls with guaranteed should have ~30% success rate", () => {
+    const input = createBaseInput({
+      pulls: 60,
+      isCharacterGuaranteed: true,
+    });
 
-    characterCopies: 1,
-    characterPity: 0,
-    isCharacterGuaranteed: true,
+    const result = simulate(input, settings);
+    expectPercentageInRange(result, 29, 31);
+  });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+  test("74 pulls with guaranteed should have ~35% success rate", () => {
+    const input = createBaseInput({
+      pulls: 74,
+      isCharacterGuaranteed: true,
+    });
 
-  const res = simulate(input, settings) * 100;
+    const result = simulate(input, settings);
+    expectPercentageInRange(result, 34, 37);
+  });
 
-  //console.log(res);
-  expect(res).toBeLessThanOrEqual(0.7); // res <=
-  expect(res).toBeGreaterThanOrEqual(0.5); // res >=
+  test("90 pulls with guaranteed should have 100% success rate", () => {
+    const input = createBaseInput({
+      pulls: 90,
+      isCharacterGuaranteed: true,
+    });
+
+    const result = simulate(input, settings);
+    expect(result).toBe(1); // 100% success rate
+  });
 });
 
-test("Test with 60 pulls,  garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 60,
-    numSimulations: TEST_SIMULATIONS,
+describe("High Pity Tests", () => {
+  test("80 pity with 1 pull and guaranteed", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      characterPity: 80,
+      isCharacterGuaranteed: true,
+    });
 
-    characterCopies: 1,
-    characterPity: 0,
-    isCharacterGuaranteed: true,
+    const result = simulate(input, settings);
+    expectPercentageInRange(result, 41, 43);
+  });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+  test("high pity (85) should have increased rates", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      characterPity: 85,
+      isCharacterGuaranteed: false,
+    });
 
-  const res = simulate(input, settings) * 100;
-
-  //console.log(res);
-  expect(res).toBeLessThanOrEqual(31); // res <=
-  expect(res).toBeGreaterThanOrEqual(29); // res >=
+    const result = simulate(input, settings);
+    // Should be higher than base rate due to soft pity
+    expect(result * 100).toBeGreaterThan(0.4);
+  });
 });
 
-test("Test with 74 pulls,  garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 74,
-    numSimulations: TEST_SIMULATIONS,
+describe("Weapon Banner Tests", () => {
+  test("weapon pulls with guaranteed", () => {
+    const input = createBaseInput({
+      pulls: 80,
+      characterCopies: 0, // Don't need characters
+      weaponCopies: 1,
+      isWeaponGuaranteed: true,
+    });
 
-    characterCopies: 1,
-    characterPity: 0,
-    isCharacterGuaranteed: true,
+    const result = simulate(input, settings);
+    expect(result).toBeGreaterThan(0); // Should have some success rate
+  });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+  test("mixed character and weapon pulls", () => {
+    const input = createBaseInput({
+      pulls: 160,
+      characterCopies: 1,
+      weaponCopies: 1,
+      isCharacterGuaranteed: true,
+      isWeaponGuaranteed: true,
+    });
 
-  const res = simulate(input, settings) * 100;
-
-  //console.log(res);
-  expect(res).toBeLessThanOrEqual(37); // res <=
-  expect(res).toBeGreaterThanOrEqual(34); // res >=
+    const result = simulate(input, settings);
+    expect(result).toBeGreaterThan(0); // Should have some success rate
+  });
 });
 
-test("Test with 80 pity, 1 pull,  garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 1,
-    numSimulations: TEST_SIMULATIONS,
+describe("Edge Cases", () => {
+  test("zero pulls should always fail", () => {
+    const input = createBaseInput({
+      pulls: 0,
+    });
 
-    characterCopies: 1,
-    characterPity: 80,
-    isCharacterGuaranteed: true,
+    const result = simulate(input, settings);
+    expect(result).toBe(0);
+  });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+  test("requesting zero copies should always succeed", () => {
+    const input = createBaseInput({
+      pulls: 1,
+      characterCopies: 0,
+      weaponCopies: 0,
+    });
 
-  const res = simulate(input, settings) * 100;
+    const result = simulate(input, settings);
+    expect(result).toBe(1); // 100% success when requesting nothing
+  });
 
-  //console.log(res);
-  expect(res).toBeLessThanOrEqual(37); // res <=
-  expect(res).toBeGreaterThanOrEqual(35); // res >=
+  test("excessive pulls should guarantee success", () => {
+    const input = createBaseInput({
+      pulls: 1000,
+      characterCopies: 1,
+      isCharacterGuaranteed: true,
+    });
+
+    const result = simulate(input, settings);
+    expect(result).toBe(1); // 100% success with many pulls
+  });
 });
 
-test("Test 90 pulls,  garuanteed", () => {
-  const input: ISimulatorInput = {
-    pulls: 90,
-    numSimulations: TEST_SIMULATIONS,
+describe("Multiple Copies Tests", () => {
+  test("requesting multiple character copies", () => {
+    const input = createBaseInput({
+      pulls: 300,
+      characterCopies: 2,
+      isCharacterGuaranteed: true,
+    });
 
-    characterCopies: 1,
-    characterPity: 0,
-    isCharacterGuaranteed: true,
+    const result = simulate(input, settings);
+    expect(result).toBeGreaterThan(0);
+    expect(result).toBeLessThanOrEqual(1);
+  });
 
-    isWeaponGuaranteed: false,
-    weaponCopies: 0,
-    weaponPity: 0,
-  };
+  test("requesting multiple weapon copies", () => {
+    const input = createBaseInput({
+      pulls: 240,
+      characterCopies: 0,
+      weaponCopies: 2,
+      isWeaponGuaranteed: true,
+    });
 
-  const res = simulate(input, settings) * 100;
-
-  //console.log(res);
-  expect(res).toBe(100); // res <=
+    const result = simulate(input, settings);
+    expect(result).toBeGreaterThan(0);
+    expect(result).toBeLessThanOrEqual(1);
+  });
 });
