@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,7 +32,7 @@ interface IFormData {
   isWeaponGuaranteed: boolean;
 }
 
-export default function Component() {
+function Page() {
   const searchParams = useSearchParams();
   const gameId = searchParams.get("game");
 
@@ -263,5 +263,14 @@ export default function Component() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function page() {
+  return (
+    //Suspense to fix this error: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+    <Suspense>
+      <Page />
+    </Suspense>
   );
 }
