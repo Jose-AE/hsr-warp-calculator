@@ -15,11 +15,12 @@ import {
 import BannerSettingsCard from "@/components/BannerSettingsCard";
 import SimulationSettingsCard from "@/components/SimulationSettingsCard";
 import SimulationResultsCard from "@/components/SimulationResultsCard";
-import { GAMES, IGame } from "@/lib/games";
+import { CUSTOM_GAME, GAMES, IGame } from "@/lib/games";
 import { useForm } from "@/hooks/useForm";
-import { Sword, User } from "lucide-react";
-import { simulate } from "@/lib/simulator";
+import { Settings2, Sword, User } from "lucide-react";
+import { ISimulationSettings, simulate } from "@/lib/simulator";
 import { useSearchParams } from "next/navigation";
+import CustomGameSettingsCard from "@/components/CustomGameSettingsCard";
 
 interface IFormData {
   numSimulations: number;
@@ -37,11 +38,16 @@ function Page() {
   const gameId = searchParams.get("game");
 
   const [selectedGame, setSelectedGame] = useState<IGame>(
-    GAMES.find((g) => g.id === gameId) || GAMES[0]
+    GAMES.find((g) => g.id === gameId) ||
+      (gameId === "custom" ? CUSTOM_GAME : GAMES[0])
   );
+
+  const [customSimulationSettings, setCustomSimulationSettings] =
+    useState<ISimulationSettings>(CUSTOM_GAME.simulationSettings);
+
   const [successRate, setSuccessRate] = useState(-1);
 
-  const { formData, updateFormData: updateForm } = useForm<IFormData>({
+  const [formData, updateForm] = useForm<IFormData>({
     characterCopies: 0,
     characterPity: 0,
     isCharacterGuaranteed: false,
@@ -63,7 +69,9 @@ function Page() {
     window.history.pushState({}, "", url); // Update the URL without reloading
 
     setSuccessRate(-1);
-    setSelectedGame(GAMES.find((game) => game.id === gameId)!);
+
+    if (gameId === "custom") setSelectedGame(CUSTOM_GAME);
+    else setSelectedGame(GAMES.find((game) => game.id === gameId)!);
   }
 
   function handleCalculate() {
@@ -78,7 +86,9 @@ function Page() {
         weaponCopies: formData.weaponCopies,
         weaponPity: formData.weaponPity,
       },
-      selectedGame.simulationSettings
+      selectedGame.id === "custom"
+        ? customSimulationSettings
+        : selectedGame.simulationSettings
     );
     setSuccessRate(res);
 
@@ -103,7 +113,7 @@ function Page() {
 
   return (
     <div className="min-h-screen ">
-      <div className="container max-w-6xl p-6 mx-auto space-y-8">
+      <div className="container max-w-3xl p-6 mx-auto space-y-8">
         {/* Header */}
         {/* <div className="py-8 space-y-4 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -153,9 +163,28 @@ function Page() {
                       </div>
                     </SelectItem>
                   ))}
+                  <SelectItem
+                    value={"custom"}
+                    className="text-slate-100 focus:bg-slate-700 focus:text-slate-300 cursor-pointer "
+                  >
+                    <div className="flex items-center gap-3">
+                      <Settings2
+                        className={`w-6 h-6 rounded-full ml-1 text-white `}
+                      />
+                      Custom
+                    </div>
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Custom Game Settings */}
+            {selectedGame.id === "custom" && (
+              <CustomGameSettingsCard
+                simulationSettings={customSimulationSettings}
+                setSimulationSettings={setCustomSimulationSettings}
+              />
+            )}
 
             {/* Settings*/}
             <SimulationSettingsCard
@@ -176,7 +205,6 @@ function Page() {
               {/* Character Banner */}
               <BannerSettingsCard
                 icon={User}
-                title={`${selectedGame.gameTerms.characterName}`}
                 currentPity={formData.characterPity}
                 setCurrentPity={(value) =>
                   updateFormData("characterPity", value)
@@ -189,29 +217,13 @@ function Page() {
                 setGuaranteed={(value) =>
                   updateFormData("isCharacterGuaranteed", value)
                 }
-                hardPity={
-                  selectedGame.simulationSettings.characterPity.hardPity
-                }
-                softPity={
-                  selectedGame.simulationSettings.characterPity.softPity
-                }
-                softPityIncrement={
-                  selectedGame.simulationSettings.characterPity
-                    .softPityIncrement
-                }
-                currentPityTooltip={`Number of ${
-                  selectedGame.gameTerms.pullName +
-                  selectedGame.gameTerms.pullConjugation
-                } since your last ${selectedGame.gameTerms.limitedCategory} ${
-                  selectedGame.gameTerms.characterName
-                }`}
-                desiredCopiesTooltip={`Desired quantity of ${selectedGame.gameTerms.limitedCategory} Limited ${selectedGame.gameTerms.characterName}`}
+                gameTerms={selectedGame.gameTerms}
+                type="character"
               />
 
               {/* Weapon Banner */}
               <BannerSettingsCard
                 icon={Sword}
-                title={selectedGame.gameTerms.weaponName}
                 currentPity={formData.weaponPity}
                 setCurrentPity={(value) => updateFormData("weaponPity", value)}
                 desiredCopies={formData.weaponCopies}
@@ -222,18 +234,8 @@ function Page() {
                 setGuaranteed={(value) =>
                   updateFormData("isWeaponGuaranteed", value)
                 }
-                hardPity={selectedGame.simulationSettings.weaponPity.hardPity}
-                softPity={selectedGame.simulationSettings.weaponPity.softPity}
-                softPityIncrement={
-                  selectedGame.simulationSettings.weaponPity.softPityIncrement
-                }
-                currentPityTooltip={`Number of ${
-                  selectedGame.gameTerms.pullName +
-                  selectedGame.gameTerms.pullConjugation
-                } since your last ${selectedGame.gameTerms.limitedCategory} ${
-                  selectedGame.gameTerms.weaponName
-                }`}
-                desiredCopiesTooltip={`Desired quantity of ${selectedGame.gameTerms.limitedCategory} Limited ${selectedGame.gameTerms.weaponName}`}
+                gameTerms={selectedGame.gameTerms}
+                type="weapon"
               />
             </div>
 

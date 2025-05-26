@@ -1,47 +1,43 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { CircleCheck, Info } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { useId } from "react";
-import Tooltip from "./ui/tooltip";
+import { IGameTerms } from "@/lib/games";
+import NumberInputField from "./NumberInputField";
 
 interface Props {
   icon: React.ElementType;
-  title: string;
+  gameTerms: IGameTerms;
+  type: "character" | "weapon";
+
   setDesiredCopies: (value: number) => void;
   desiredCopies: number;
+
   setCurrentPity: (value: number) => void;
   currentPity: number;
-  guaranteed: boolean;
-  setGuaranteed: (value: boolean) => void;
-  hardPity: number;
-  softPity: number;
-  softPityIncrement: number;
 
-  currentPityTooltip: string;
-  desiredCopiesTooltip: string;
+  setGuaranteed: (value: boolean) => void;
+  guaranteed: boolean;
 }
 
 export default function BannerSettingsCard({
   icon: Icon,
-  title,
-  desiredCopies,
-  setDesiredCopies,
-  guaranteed,
-  setGuaranteed,
+  type,
   currentPity,
+  desiredCopies,
+  gameTerms,
+  guaranteed,
   setCurrentPity,
-  hardPity,
-  softPity,
-  softPityIncrement,
-  currentPityTooltip,
-  desiredCopiesTooltip,
+  setDesiredCopies,
+  setGuaranteed,
 }: Props) {
   const switchId = useId();
+
+  const name =
+    type === "character" ? gameTerms.characterName : gameTerms.weaponName;
 
   return (
     <Card className="shadow-lg bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border-cyan-500/30">
@@ -50,51 +46,28 @@ export default function BannerSettingsCard({
           <div className="p-2 rounded-lg bg-cyan-500/20">
             <Icon className="w-5 h-5 text-cyan-400" />
           </div>
-          {title} Banner
+          {name} Banner
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            <Label className="text-sm font-medium text-slate-200">
-              Current Pity
-              <Tooltip message={currentPityTooltip}>
-                <Info className="w-3 h-3" />
-              </Tooltip>
-            </Label>
-            <Input
-              type="number"
-              autoComplete="off"
-              placeholder="0"
-              value={currentPity === 0 ? "" : currentPity}
-              onChange={(e) =>
-                e.target.value === ""
-                  ? setCurrentPity(0) // Or handle this as special case
-                  : setCurrentPity(Number(e.target.value))
-              }
-              className="h-11 text-slate-100 bg-slate-800/50 border-cyan-500/30 focus:border-cyan-400"
-            />
-          </div>
-          <div className="space-y-3">
-            <Label className="text-sm font-medium text-slate-200">
-              Desired Copies
-              <Tooltip message={desiredCopiesTooltip}>
-                <Info className="w-3 h-3" />
-              </Tooltip>
-            </Label>
-            <Input
-              type="number"
-              autoComplete="off"
-              placeholder="0"
-              value={desiredCopies === 0 ? "" : desiredCopies}
-              onChange={(e) =>
-                e.target.value === ""
-                  ? setDesiredCopies(0) // Or handle this as special case
-                  : setDesiredCopies(Number(e.target.value))
-              }
-              className="h-11 text-slate-100 bg-slate-800/50 border-cyan-500/30 focus:border-cyan-400"
-            />
-          </div>
+          <NumberInputField
+            label="Desired Copies"
+            tooltip={`Desired quantity of ${gameTerms.limitedCategory} Limited ${name}`}
+            value={desiredCopies}
+            onChange={setDesiredCopies}
+            className="border-cyan-500/30 focus:border-cyan-400"
+          />
+
+          <NumberInputField
+            label="Current Pity"
+            tooltip={`Number of ${
+              gameTerms.pullName + gameTerms.pullConjugation
+            } since your last ${gameTerms.limitedCategory} ${name}`}
+            value={currentPity}
+            onChange={setCurrentPity}
+            className="border-cyan-500/30 focus:border-cyan-400"
+          />
         </div>
 
         <label
@@ -107,7 +80,7 @@ export default function BannerSettingsCard({
               htmlFor={switchId}
               className="font-medium text-slate-200 cursor-pointer"
             >
-              Guaranteed Limited {title}
+              Guaranteed Limited {name}
             </Label>
           </div>
           <Switch
@@ -118,7 +91,8 @@ export default function BannerSettingsCard({
           />
         </label>
 
-        <div className="flex flex-wrap gap-2">
+        {/* Game settings badges -unused */}
+        {/* <div className="flex flex-wrap gap-2">
           <Badge variant="outline" className="border-cyan-500/30 text-cyan-300">
             Hard Pity: {hardPity}
           </Badge>
@@ -128,7 +102,7 @@ export default function BannerSettingsCard({
           <Badge variant="outline" className="border-cyan-500/30 text-cyan-300">
             Soft Pity Chance Increment: {softPityIncrement * 100}%
           </Badge>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

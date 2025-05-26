@@ -1,10 +1,8 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Info, Settings } from "lucide-react";
-import Tooltip from "./ui/tooltip";
+import NumberInputField from "./NumberInputField";
+import { Settings } from "lucide-react";
 
 interface Props {
   pullName: string;
@@ -33,46 +31,21 @@ export default function SimulationSettingsCard({
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            <Label className="text-sm md:text-sm  font-medium text-slate-200">
-              {pullName}
-              <Tooltip message={`Number of ${pullName} to spend`}>
-                <Info className="w-3 h-3" />
-              </Tooltip>
-            </Label>
-            <Input
-              type="number"
-              autoComplete="off"
-              placeholder="0"
-              value={pulls === 0 ? "" : pulls}
-              onChange={(e) =>
-                e.target.value === ""
-                  ? setPulls(0) // Or handle this as special case
-                  : setPulls(Number(e.target.value))
-              }
-              className="h-11 text-slate-100 bg-slate-800/50 border-indigo-500/30 focus:border-indigo-400"
-            />
-          </div>
-          <div className="space-y-3">
-            <Label className="text-sm font-medium text-slate-200">
-              Simulations
-              <Tooltip message="Increasing the number of simulations will yield more accurate results but will extend the time required for calculations. The more warps you make the longer each simulation takes. Leave default value for best results">
-                <Info className="w-3 h-3" />
-              </Tooltip>
-            </Label>
-            <Input
-              type="number"
-              autoComplete="off"
-              placeholder="0"
-              value={numSimulations === 0 ? "" : numSimulations}
-              onChange={(e) =>
-                e.target.value === ""
-                  ? setNumSimulations(0) // Or handle this as special case
-                  : setNumSimulations(Number(e.target.value))
-              }
-              className="h-11 text-slate-100 bg-slate-800/50 border-indigo-500/30 focus:border-indigo-400"
-            />
-          </div>
+          <NumberInputField
+            label={pullName}
+            tooltip={`Number of ${pullName} to spend`}
+            value={pulls}
+            onChange={setPulls}
+            className=" border-indigo-500/30 focus:border-indigo-400"
+          />
+
+          <NumberInputField
+            label="Simulations"
+            tooltip="Increasing the number of simulations will yield more accurate results but will extend the time required for calculations. The more warps you make the longer each simulation takes. Leave default value for best results"
+            value={numSimulations}
+            onChange={setNumSimulations}
+            className=" border-indigo-500/30 focus:border-indigo-400"
+          />
         </div>
       </CardContent>
     </Card>

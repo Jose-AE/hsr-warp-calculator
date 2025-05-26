@@ -8,9 +8,9 @@ export interface IRate {
 }
 
 export interface IPity {
-  hardPity: number;
-  softPity: number;
-  softPityIncrement: number;
+  hardPity: number; // number of pulls after which you are guaranteed to get a 5 star
+  softPity: number; // number of pulls after which the chance to get a 5 star start to increase
+  softPityIncrement: number; // the increment of the chance to get a 5 star after soft pity
 }
 
 export interface ISimulationSettings {

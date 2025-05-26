@@ -7,5 +7,5 @@ export function useForm<T extends Record<string, any>>(initialData: T) {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
-  return { formData, updateFormData };
+  return [formData, updateFormData] as const;
 }
