@@ -3,7 +3,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ISimulatorGameSettings } from "@/lib/simulator";
 import { useForm } from "@/hooks/useForm";
-import { CUSTOM_GAME } from "@/lib/games";
 import { useEffect } from "react";
 import { Settings2 } from "lucide-react";
 import NumberInputField from "./NumberInputField";
@@ -83,11 +82,11 @@ export default function CustomGameSettingsCard({
           <NumberInputField
             label="Guaranteed After"
             tooltip="The number of consecutive times you must receive a 5★ thats not the desired limited 5★ before you're guaranteed to get the desired limited 5★."
-            value={formData.characterRate.guarantedAfter}
+            value={formData.characterRate.guaranteedAfter}
             onChange={(value) =>
               updateFormData("characterRate", {
                 ...formData.characterRate,
-                guarantedAfter: value,
+                guaranteedAfter: value,
               })
             }
             className={inputClassName}
@@ -119,7 +118,7 @@ export default function CustomGameSettingsCard({
           />
           <NumberInputField
             label="Soft Pity Increment (%)"
-            tooltip="Percentage increase per pull to get 5★ after enetring soft pity"
+            tooltip="Percentage increase per pull to get 5★ after entering soft pity"
             value={formData.characterPity.softPityIncrement * 100}
             onChange={(value) =>
               updateFormData("characterPity", {
@@ -175,11 +174,11 @@ export default function CustomGameSettingsCard({
           <NumberInputField
             label="Guaranteed After"
             tooltip="The number of consecutive times you must receive a 5★ thats not the desired limited 5★ before you're guaranteed to get the desired limited 5★."
-            value={formData.weaponRate.guarantedAfter}
+            value={formData.weaponRate.guaranteedAfter}
             onChange={(value) =>
               updateFormData("weaponRate", {
                 ...formData.weaponRate,
-                guarantedAfter: value,
+                guaranteedAfter: value,
               })
             }
             className={inputClassName}

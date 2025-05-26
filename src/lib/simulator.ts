@@ -21,7 +21,7 @@ interface IRate {
   baseRate: number; ///base % chance to get 5star
   limitedRate: number; ///base % chance for 5* to be the limited  most of the time 50/50
   limitedOptions: number; // number of 5* limited options you can get (eg: weapon banner has 2)
-  guarantedAfter: number; // number of base rates you have to win to guarantee the limited 5* you want
+  guaranteedAfter: number; // number of base rates you have to win to guarantee the limited 5* you want
 }
 
 interface IPity {
@@ -97,7 +97,7 @@ export class Simulator {
           currentData.currentLosses++;
           currentData.isGuaranteed =
             currentData.currentLosses >=
-            this.settings.characterRate.guarantedAfter;
+            this.settings.characterRate.guaranteedAfter;
           currentData.currentPity = 0;
         } else {
           //didint get 5 star
