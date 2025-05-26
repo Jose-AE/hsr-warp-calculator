@@ -26,8 +26,20 @@ export function pull(
 
     //if got 5 star
     if (rng <= rate) {
-      if (guaranteed) return true; //have garanteed
-      if (Math.random() <= limitedRate / limitedOptions) return true; //if win 50/50
+      //if guaranteed limited
+      if (guaranteed) {
+        //if multiple limited options gamble to try and get the specific limited
+        if (Math.random() <= 1 / limitedOptions) return true; //have garanteed
+        else return false; //if lost try to get the specific limited
+      }
+
+      //if won 50/50
+      if (Math.random() <= limitedRate) {
+        //if multiple limited options gamble to try and get the specific limited
+        if (Math.random() <= 1 / limitedOptions) return true; //have garanteed
+        else return false; //if lost try to get the specific limited
+      }
+
       return false; // if lost 50/50
     }
     return null; //if got nothing
