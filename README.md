@@ -23,15 +23,16 @@
 
 ## About The Project
 
-<img src="./public/readme/page1.png" />
-<img src="./public/readme/page2.png" />
-<img src="./public/readme/page3.png" />
+<img src="./assets/readme/1.png" />
+<img src="./assets/readme/2.png" />
+<img src="./assets/readme/3.png" />
 
 ### Built With
 
-<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"> <img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/typescript_original_logo_icon_146317.png" alt="Typescript" width="40" height="40"/> </a>
-<a href="https://reactjs.org/" target="_blank" rel="noreferrer"> <img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/react_original_logo_icon_146374.png" alt="react" width="40" height="40"/> </a>
-<a href="https://nextjs.org/" target="_blank" rel="noreferrer"> <img src="https://seeklogo.com/images/N/next-js-icon-logo-EE302D5DBD-seeklogo.com.png" alt="nextjs" width="40" height="40"/> </a><a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.svgrepo.com/show/374118/tailwind.svg" alt="chakra ui" width="40" height="40"/> </a>
+<a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer"><span><img src="https://www.svgrepo.com/show/354478/typescript-icon.svg" alt="Typescript" width="40" height="40"/></span></a>
+<a href="https://reactjs.org/" target="_blank" rel="noreferrer"><span><img src="https://cdn.icon-icons.com/icons2/2415/PNG/512/react_original_logo_icon_146374.png" alt="react" width="40" height="40"/></span></a>
+<a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"><span><img src="https://www.svgrepo.com/show/374118/tailwind.svg" alt="tailwind" width="40" height="40"/></span></a>
+<a href="https://nextjs.org/" target="_blank" rel="noreferrer"><span><img src="./assets/readme/nextjs-icon.svg" alt="nextjs" width="40" height="40"/></span></a>
 
 <!-- GETTING STARTED -->
 
