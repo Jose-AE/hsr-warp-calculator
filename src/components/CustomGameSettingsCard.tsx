@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ISimulationSettings } from "@/lib/simulator";
+import { ISimulatorGameSettings } from "@/lib/simulator";
 import { useForm } from "@/hooks/useForm";
 import { CUSTOM_GAME } from "@/lib/games";
 import { useEffect } from "react";
@@ -9,8 +9,8 @@ import { Settings2 } from "lucide-react";
 import NumberInputField from "./NumberInputField";
 
 interface Props {
-  setSimulationSettings: (value: ISimulationSettings) => void;
-  simulationSettings: ISimulationSettings;
+  setSimulationSettings: (value: ISimulatorGameSettings) => void;
+  simulationSettings: ISimulatorGameSettings;
 }
 
 export default function CustomGameSettingsCard({
@@ -18,7 +18,7 @@ export default function CustomGameSettingsCard({
   simulationSettings,
 }: Props) {
   const [formData, updateFormData] =
-    useForm<ISimulationSettings>(simulationSettings);
+    useForm<ISimulatorGameSettings>(simulationSettings);
 
   useEffect(() => {
     if (setSimulationSettings) {

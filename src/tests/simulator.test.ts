@@ -1,36 +1,39 @@
 import { GAMES } from "../lib/games";
 import {
   ISimulatorInput,
-  simulate,
-  ISimulationSettings,
+  ISimulatorGameSettings,
+  Simulator,
 } from "../lib/simulator";
 
 import { expect, test, describe } from "vitest";
 
-const settings: ISimulationSettings = GAMES[0].simulationSettings;
+const settings: ISimulatorGameSettings = GAMES[0].simulationSettings;
+const simulator = new Simulator(settings);
 const TEST_SIMULATIONS = 100000;
 
 // Helper function to create base input
-const createBaseInput = (
+function createBaseInput(
   overrides: Partial<ISimulatorInput> = {}
-): ISimulatorInput => ({
-  pulls: 1,
-  numSimulations: TEST_SIMULATIONS,
-  characterCopies: 1,
-  characterPity: 0,
-  isCharacterGuaranteed: false,
-  isWeaponGuaranteed: false,
-  weaponCopies: 0,
-  weaponPity: 0,
-  ...overrides,
-});
+): ISimulatorInput {
+  return {
+    pulls: 1,
+    numSimulations: TEST_SIMULATIONS,
+    characterCopies: 1,
+    characterPity: 0,
+    isCharacterGuaranteed: false,
+    isWeaponGuaranteed: false,
+    weaponCopies: 0,
+    weaponPity: 0,
+    ...overrides,
+  };
+}
 
 // Helper function to assert percentage range
-const expectPercentageInRange = (result: number, min: number, max: number) => {
+function expectPercentageInRange(result: number, min: number, max: number) {
   const percentage = result * 100;
   expect(percentage).toBeGreaterThanOrEqual(min);
   expect(percentage).toBeLessThanOrEqual(max);
-};
+}
 
 describe("Single Pull Tests", () => {
   test("single pull without guaranteed should have low success rate", () => {
@@ -39,7 +42,7 @@ describe("Single Pull Tests", () => {
       isCharacterGuaranteed: false,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expectPercentageInRange(result, 0.2, 0.4);
   });
 
@@ -49,7 +52,7 @@ describe("Single Pull Tests", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expectPercentageInRange(result, 0.5, 0.7);
   });
 
@@ -60,7 +63,7 @@ describe("Single Pull Tests", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBe(1); // 100% success rate
   });
 });
@@ -72,7 +75,7 @@ describe("Multi-Pull Tests with Guaranteed", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expectPercentageInRange(result, 29, 31);
   });
 
@@ -82,7 +85,7 @@ describe("Multi-Pull Tests with Guaranteed", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expectPercentageInRange(result, 34, 37);
   });
 
@@ -92,7 +95,7 @@ describe("Multi-Pull Tests with Guaranteed", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBe(1); // 100% success rate
   });
 });
@@ -105,7 +108,7 @@ describe("High Pity Tests", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expectPercentageInRange(result, 41, 43);
   });
 
@@ -116,7 +119,7 @@ describe("High Pity Tests", () => {
       isCharacterGuaranteed: false,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     // Should be higher than base rate due to soft pity
     expect(result * 100).toBeGreaterThan(0.4);
   });
@@ -131,7 +134,7 @@ describe("Weapon Banner Tests", () => {
       isWeaponGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBeGreaterThan(0); // Should have some success rate
   });
 
@@ -144,7 +147,7 @@ describe("Weapon Banner Tests", () => {
       isWeaponGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBeGreaterThan(0); // Should have some success rate
   });
 });
@@ -155,7 +158,7 @@ describe("Edge Cases", () => {
       pulls: 0,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBe(0);
   });
 
@@ -166,7 +169,7 @@ describe("Edge Cases", () => {
       weaponCopies: 0,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBe(1); // 100% success when requesting nothing
   });
 
@@ -177,7 +180,7 @@ describe("Edge Cases", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBe(1); // 100% success with many pulls
   });
 });
@@ -190,7 +193,7 @@ describe("Multiple Copies Tests", () => {
       isCharacterGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBeGreaterThan(0);
     expect(result).toBeLessThanOrEqual(1);
   });
@@ -203,7 +206,7 @@ describe("Multiple Copies Tests", () => {
       isWeaponGuaranteed: true,
     });
 
-    const result = simulate(input, settings);
+    const result = simulator.run(input);
     expect(result).toBeGreaterThan(0);
     expect(result).toBeLessThanOrEqual(1);
   });

@@ -1,4 +1,4 @@
-import { ISimulationSettings } from "./simulator";
+import { ISimulatorGameSettings } from "./simulator";
 
 export interface IGameTerms {
   limitedCategory: string; //5 star , S tier, 5★
@@ -13,7 +13,7 @@ export interface IGame {
   name: string;
   icon: string;
   gameTerms: IGameTerms;
-  simulationSettings: ISimulationSettings;
+  simulationSettings: ISimulatorGameSettings;
 }
 
 export const GAMES: IGame[] = [
@@ -155,7 +155,7 @@ export const CUSTOM_GAME: IGame = {
       softPityIncrement: 0.06,
     },
     weaponRate: {
-      baseRate: 0.007,
+      baseRate: 0.006,
       guarantedAfter: 1,
       limitedOptions: 2,
       limitedRate: 0.75,

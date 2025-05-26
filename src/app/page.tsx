@@ -18,20 +18,13 @@ import SimulationResultsCard from "@/components/SimulationResultsCard";
 import { CUSTOM_GAME, GAMES, IGame } from "@/lib/games";
 import { useForm } from "@/hooks/useForm";
 import { Settings2, Sword, User } from "lucide-react";
-import { ISimulationSettings, simulate } from "@/lib/simulator";
+import {
+  ISimulatorGameSettings,
+  ISimulatorInput,
+  Simulator,
+} from "@/lib/simulator";
 import { useSearchParams } from "next/navigation";
 import CustomGameSettingsCard from "@/components/CustomGameSettingsCard";
-
-interface IFormData {
-  numSimulations: number;
-  pulls: number;
-  characterPity: number;
-  weaponPity: number;
-  characterCopies: number;
-  weaponCopies: number;
-  isCharacterGuaranteed: boolean;
-  isWeaponGuaranteed: boolean;
-}
 
 function Page() {
   const searchParams = useSearchParams();
@@ -43,11 +36,11 @@ function Page() {
   );
 
   const [customSimulationSettings, setCustomSimulationSettings] =
-    useState<ISimulationSettings>(CUSTOM_GAME.simulationSettings);
+    useState<ISimulatorGameSettings>(CUSTOM_GAME.simulationSettings);
 
   const [successRate, setSuccessRate] = useState(-1);
 
-  const [formData, updateForm] = useForm<IFormData>({
+  const [formData, updateForm] = useForm<ISimulatorInput>({
     characterCopies: 0,
     characterPity: 0,
     isCharacterGuaranteed: false,
@@ -58,7 +51,7 @@ function Page() {
     weaponPity: 0,
   });
 
-  function updateFormData(key: keyof IFormData, value: number | boolean) {
+  function updateFormData(key: keyof ISimulatorInput, value: number | boolean) {
     setSuccessRate(-1);
     updateForm(key, value);
   }
@@ -75,21 +68,22 @@ function Page() {
   }
 
   function handleCalculate() {
-    const res = simulate(
-      {
-        characterCopies: formData.characterCopies,
-        characterPity: formData.characterPity,
-        isCharacterGuaranteed: formData.isCharacterGuaranteed,
-        isWeaponGuaranteed: formData.isWeaponGuaranteed,
-        numSimulations: formData.numSimulations,
-        pulls: formData.pulls,
-        weaponCopies: formData.weaponCopies,
-        weaponPity: formData.weaponPity,
-      },
+    const simulator = new Simulator(
       selectedGame.id === "custom"
         ? customSimulationSettings
         : selectedGame.simulationSettings
     );
+
+    const res = simulator.run({
+      characterCopies: formData.characterCopies,
+      characterPity: formData.characterPity,
+      isCharacterGuaranteed: formData.isCharacterGuaranteed,
+      isWeaponGuaranteed: formData.isWeaponGuaranteed,
+      numSimulations: formData.numSimulations,
+      pulls: formData.pulls,
+      weaponCopies: formData.weaponCopies,
+      weaponPity: formData.weaponPity,
+    });
     setSuccessRate(res);
 
     // Scroll to the bottom of the page after calculation
