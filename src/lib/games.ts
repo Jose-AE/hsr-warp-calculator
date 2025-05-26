@@ -37,7 +37,7 @@ export const GAMES: IGame[] = [
       },
       characterRate: {
         baseRate: 0.006,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 1,
         limitedRate: 0.5,
       },
@@ -48,7 +48,7 @@ export const GAMES: IGame[] = [
       },
       weaponRate: {
         baseRate: 0.008,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 1,
         limitedRate: 0.75,
       },
@@ -69,7 +69,7 @@ export const GAMES: IGame[] = [
     simulationSettings: {
       characterRate: {
         baseRate: 0.006,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 1,
         limitedRate: 0.5,
       },
@@ -81,7 +81,7 @@ export const GAMES: IGame[] = [
 
       weaponRate: {
         baseRate: 0.007,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 2,
         limitedRate: 0.75,
       },
@@ -112,7 +112,7 @@ export const GAMES: IGame[] = [
       },
       characterRate: {
         baseRate: 0.006,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 1,
         limitedRate: 0.5,
       },
@@ -123,7 +123,7 @@ export const GAMES: IGame[] = [
       },
       weaponRate: {
         baseRate: 0.01,
-        guarantedAfter: 1,
+        guaranteedAfter: 1,
         limitedOptions: 1,
         limitedRate: 0.75,
       },
@@ -145,7 +145,7 @@ export const CUSTOM_GAME: IGame = {
   simulationSettings: {
     characterRate: {
       baseRate: 0.006,
-      guarantedAfter: 1,
+      guaranteedAfter: 1,
       limitedOptions: 1,
       limitedRate: 0.5,
     },
@@ -156,7 +156,7 @@ export const CUSTOM_GAME: IGame = {
     },
     weaponRate: {
       baseRate: 0.006,
-      guarantedAfter: 1,
+      guaranteedAfter: 1,
       limitedOptions: 2,
       limitedRate: 0.75,
     },
