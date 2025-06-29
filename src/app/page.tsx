@@ -1,6 +1,6 @@
 "use client";
 
-import {Suspense, useEffect, useState} from "react";
+import { Suspense, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -50,7 +50,6 @@ function Page() {
     currency: 0,
     weaponCopies: 0,
     weaponPity: 0,
-    conversionRate: 160,
   });
 
   function updateFormData(key: keyof ISimulatorInput, value: number | boolean) {
@@ -86,7 +85,6 @@ function Page() {
       currency: formData.currency,
       weaponCopies: formData.weaponCopies,
       weaponPity: formData.weaponPity,
-      conversionRate: formData.conversionRate
     });
     setSuccessRate(res);
 
@@ -99,7 +97,8 @@ function Page() {
     }, 100);
   }
 
-  const conversionRate = selectedGame.id === "custom"
+  const conversionRate =
+    selectedGame.id === "custom"
       ? customSimulationSettings.conversionRate
       : selectedGame.simulationSettings.conversionRate;
 
@@ -116,7 +115,7 @@ function Page() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="container max-w-3xl p-6 mx-auto space-y-8">
         {/* Header */}
         {/* <div className="py-8 space-y-4 text-center">
@@ -202,10 +201,9 @@ function Page() {
               }
               pulls={formData.pulls}
               setPulls={(value) => updateFormData("pulls", value)}
-
               currencyName={
-                  selectedGame.gameTerms.currencyName +
-                  selectedGame.gameTerms.currencyConjugation
+                selectedGame.gameTerms.currencyName +
+                selectedGame.gameTerms.currencyConjugation
               }
               currency={formData.currency}
               setCurrency={(value) => updateFormData("currency", value)}
@@ -267,17 +265,17 @@ function Page() {
         {successRate >= 0 && (
           <SimulationResultsCard
             characterCopies={formData.characterCopies}
-
             gameTerms={selectedGame.gameTerms}
             numSimulations={formData.numSimulations}
-            totalPulls={formData.pulls + Math.floor(formData.currency / conversionRate)}
+            totalPulls={
+              formData.pulls + Math.floor(formData.currency / conversionRate)
+            }
             pulls={formData.pulls}
             currencyPulls={Math.floor(formData.currency / conversionRate)}
             successRate={successRate}
             weaponCopies={formData.weaponCopies}
           />
         )}
-
       </div>
     </div>
   );

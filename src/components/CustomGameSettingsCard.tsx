@@ -228,7 +228,7 @@ export default function CustomGameSettingsCard({
             tooltip="The conversion rate of the currency to equal a single pull"
             value={formData.conversionRate}
             onChange={(value) => {
-                updateFormData("conversionRate", value);
+              updateFormData("conversionRate", value);
             }}
             className={inputClassName}
           />

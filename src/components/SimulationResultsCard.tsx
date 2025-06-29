@@ -30,6 +30,17 @@ export default function SimulationResultsCard({
   weaponCopies,
   gameTerms,
 }: Props) {
+  function getPullName(forcePlural = false) {
+    if (pulls === 1 && !forcePlural) {
+      return gameTerms.pullName;
+    }
+    return gameTerms.pullName + gameTerms.pullConjugation;
+  }
+
+  function getCurrencyName() {
+    return gameTerms.currencyName + gameTerms.currencyConjugation;
+  }
+
   return (
     <Card className="shadow-xl bg-slate-900/60 border border-slate-700/40 backdrop-blur-lg rounded-2xl">
       <CardHeader className="space-y-2">
@@ -40,16 +51,17 @@ export default function SimulationResultsCard({
         <CardDescription className="text-slate-300 leading-relaxed">
           Ran <strong>{numSimulations.toLocaleString()}</strong> simulations,
           each consisting of <strong>{totalPulls.toLocaleString()}</strong>{" "}
-          total {gameTerms.pullName + gameTerms.pullConjugation} where <strong>{pulls.toLocaleString()}</strong>{" "}
-          were from {gameTerms.pullName + gameTerms.pullConjugation} and <strong>{currencyPulls.toLocaleString()}</strong>{" "}
-          were from {gameTerms.currencyName + gameTerms.currencyConjugation}. Simulations began on
-          the {gameTerms.characterName} banner and switched to the{" "}
+          {getPullName()} in total, <strong>{pulls.toLocaleString()}</strong>{" "}
+          from {getPullName(true)} and{" "}
+          <strong>{currencyPulls.toLocaleString()}</strong> from{" "}
+          {getCurrencyName()}. Simulations began on the{" "}
+          {gameTerms.characterName} banner and switched to the{" "}
           {gameTerms.weaponName} banner after obtaining the desired number of
           limited {gameTerms.characterName}. The result percentage represents
           the chance you have of getting <strong>{characterCopies}</strong>{" "}
           Limited {gameTerms.characterName} and <strong>{weaponCopies}</strong>{" "}
-          Limited {gameTerms.weaponName} copies with{" "}
-          <strong>{totalPulls.toLocaleString()}</strong> warps
+          Limited {gameTerms.weaponName} copies within{" "}
+          <strong>{totalPulls.toLocaleString()}</strong> {getPullName()}
         </CardDescription>
       </CardHeader>
 
