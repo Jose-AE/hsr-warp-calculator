@@ -12,7 +12,9 @@ import { IGameTerms } from "@/lib/games";
 interface Props {
   numSimulations: number;
   successRate: number;
+  totalPulls: number;
   pulls: number;
+  currencyPulls: number;
   characterCopies: number;
   weaponCopies: number;
   gameTerms: IGameTerms;
@@ -21,7 +23,9 @@ interface Props {
 export default function SimulationResultsCard({
   characterCopies,
   numSimulations,
+  totalPulls,
   pulls,
+  currencyPulls,
   successRate,
   weaponCopies,
   gameTerms,
@@ -35,15 +39,17 @@ export default function SimulationResultsCard({
         </CardTitle>
         <CardDescription className="text-slate-300 leading-relaxed">
           Ran <strong>{numSimulations.toLocaleString()}</strong> simulations,
-          each consisting of <strong>{pulls.toLocaleString()}</strong>{" "}
-          {gameTerms.pullName + gameTerms.pullConjugation}. Simulations began on
+          each consisting of <strong>{totalPulls.toLocaleString()}</strong>{" "}
+          total {gameTerms.pullName + gameTerms.pullConjugation} where <strong>{pulls.toLocaleString()}</strong>{" "}
+          were from {gameTerms.pullName + gameTerms.pullConjugation} and <strong>{currencyPulls.toLocaleString()}</strong>{" "}
+          were from {gameTerms.currencyName + gameTerms.currencyConjugation}. Simulations began on
           the {gameTerms.characterName} banner and switched to the{" "}
           {gameTerms.weaponName} banner after obtaining the desired number of
           limited {gameTerms.characterName}. The result percentage represents
           the chance you have of getting <strong>{characterCopies}</strong>{" "}
           Limited {gameTerms.characterName} and <strong>{weaponCopies}</strong>{" "}
           Limited {gameTerms.weaponName} copies with{" "}
-          <strong>{pulls.toLocaleString()}</strong> warps
+          <strong>{totalPulls.toLocaleString()}</strong> warps
         </CardDescription>
       </CardHeader>
 

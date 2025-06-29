@@ -8,6 +8,9 @@ interface Props {
   pullName: string;
   setPulls: (value: number) => void;
   pulls: number;
+  currencyName: string;
+  setCurrency: (value: number) => void;
+  currency: number;
   setNumSimulations: (value: number) => void;
   numSimulations: number;
 }
@@ -18,6 +21,9 @@ export default function SimulationSettingsCard({
   pullName,
   pulls,
   setPulls,
+  currencyName,
+  currency,
+  setCurrency
 }: Props) {
   return (
     <Card className="shadow-lg bg-gradient-to-br from-indigo-500/10 to-indigo-500/10 border-indigo-500/30">
@@ -37,6 +43,14 @@ export default function SimulationSettingsCard({
             value={pulls}
             onChange={setPulls}
             className=" border-indigo-500/30 focus:border-indigo-400"
+          />
+
+          <NumberInputField
+              label={currencyName}
+              tooltip={`Number of ${currencyName} to spend`}
+              value={currency}
+              onChange={setCurrency}
+              className=" border-indigo-500/30 focus:border-indigo-400"
           />
 
           <NumberInputField

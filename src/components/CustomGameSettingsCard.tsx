@@ -219,6 +219,20 @@ export default function CustomGameSettingsCard({
             allowDecimals
           />
         </div>
+
+        {/* Custom currency conversion */}
+        <h3 className="text-teal-300 font-semibold">Currency Conversion</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <NumberInputField
+            label="Currency Conversion Rate"
+            tooltip="The conversion rate of the currency to equal a single pull"
+            value={formData.conversionRate}
+            onChange={(value) => {
+                updateFormData("conversionRate", value);
+            }}
+            className={inputClassName}
+          />
+        </div>
       </CardContent>
     </Card>
   );
