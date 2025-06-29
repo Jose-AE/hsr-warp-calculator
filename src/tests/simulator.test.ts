@@ -24,6 +24,7 @@ function createBaseInput(
     isWeaponGuaranteed: false,
     weaponCopies: 0,
     weaponPity: 0,
+    currency: 0,
     ...overrides,
   };
 }
