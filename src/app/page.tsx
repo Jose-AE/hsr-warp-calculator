@@ -47,6 +47,7 @@ function Page() {
     isWeaponGuaranteed: false,
     numSimulations: 10000,
     pulls: 0,
+    currency: 0,
     weaponCopies: 0,
     weaponPity: 0,
   });
@@ -81,6 +82,7 @@ function Page() {
       isWeaponGuaranteed: formData.isWeaponGuaranteed,
       numSimulations: formData.numSimulations,
       pulls: formData.pulls,
+      currency: formData.currency,
       weaponCopies: formData.weaponCopies,
       weaponPity: formData.weaponPity,
     });
@@ -95,9 +97,16 @@ function Page() {
     }, 100);
   }
 
+  const conversionRate =
+    selectedGame.id === "custom"
+      ? customSimulationSettings.conversionRate
+      : selectedGame.simulationSettings.conversionRate;
+
   function validateForm() {
     return (
-      formData.pulls > 0 &&
+      (formData.pulls > 0
+        ? formData.currency >= 0
+        : formData.currency >= conversionRate) &&
       formData.characterPity >= 0 &&
       formData.weaponPity >= 0 &&
       formData.numSimulations > 0 &&
@@ -106,7 +115,7 @@ function Page() {
   }
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="container max-w-3xl p-6 mx-auto space-y-8">
         {/* Header */}
         {/* <div className="py-8 space-y-4 text-center">
@@ -122,7 +131,7 @@ function Page() {
         </div> */}
 
         {/* Main Card */}
-        <Card className="shadow-2xl bg-slate-900/50 border-slate-700/50 backdrop-blur-xl mt-20">
+        <Card className="shadow-2xl bg-slate-900/50 border-slate-700/50 backdrop-blur-xl">
           <CardContent className="space-y-8">
             {/* Game Selection */}
             <div className="space-y-3 ">
@@ -192,6 +201,12 @@ function Page() {
               }
               pulls={formData.pulls}
               setPulls={(value) => updateFormData("pulls", value)}
+              currencyName={
+                selectedGame.gameTerms.currencyName +
+                selectedGame.gameTerms.currencyConjugation
+              }
+              currency={formData.currency}
+              setCurrency={(value) => updateFormData("currency", value)}
             />
 
             {/* Banner Configuration */}
@@ -252,7 +267,11 @@ function Page() {
             characterCopies={formData.characterCopies}
             gameTerms={selectedGame.gameTerms}
             numSimulations={formData.numSimulations}
+            totalPulls={
+              formData.pulls + Math.floor(formData.currency / conversionRate)
+            }
             pulls={formData.pulls}
+            currencyPulls={Math.floor(formData.currency / conversionRate)}
             successRate={successRate}
             weaponCopies={formData.weaponCopies}
           />

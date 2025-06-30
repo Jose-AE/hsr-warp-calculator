@@ -12,7 +12,9 @@ import { IGameTerms } from "@/lib/games";
 interface Props {
   numSimulations: number;
   successRate: number;
+  totalPulls: number;
   pulls: number;
+  currencyPulls: number;
   characterCopies: number;
   weaponCopies: number;
   gameTerms: IGameTerms;
@@ -21,11 +23,24 @@ interface Props {
 export default function SimulationResultsCard({
   characterCopies,
   numSimulations,
+  totalPulls,
   pulls,
+  currencyPulls,
   successRate,
   weaponCopies,
   gameTerms,
 }: Props) {
+  function getPullName(forcePlural = false) {
+    if (pulls === 1 && !forcePlural) {
+      return gameTerms.pullName;
+    }
+    return gameTerms.pullName + gameTerms.pullConjugation;
+  }
+
+  function getCurrencyName() {
+    return gameTerms.currencyName + gameTerms.currencyConjugation;
+  }
+
   return (
     <Card className="shadow-xl bg-slate-900/60 border border-slate-700/40 backdrop-blur-lg rounded-2xl">
       <CardHeader className="space-y-2">
@@ -35,15 +50,18 @@ export default function SimulationResultsCard({
         </CardTitle>
         <CardDescription className="text-slate-300 leading-relaxed">
           Ran <strong>{numSimulations.toLocaleString()}</strong> simulations,
-          each consisting of <strong>{pulls.toLocaleString()}</strong>{" "}
-          {gameTerms.pullName + gameTerms.pullConjugation}. Simulations began on
-          the {gameTerms.characterName} banner and switched to the{" "}
+          each consisting of <strong>{totalPulls.toLocaleString()}</strong>{" "}
+          {getPullName()} in total, <strong>{pulls.toLocaleString()}</strong>{" "}
+          from {getPullName(true)} and{" "}
+          <strong>{currencyPulls.toLocaleString()}</strong> from{" "}
+          {getCurrencyName()}. Simulations began on the{" "}
+          {gameTerms.characterName} banner and switched to the{" "}
           {gameTerms.weaponName} banner after obtaining the desired number of
           limited {gameTerms.characterName}. The result percentage represents
           the chance you have of getting <strong>{characterCopies}</strong>{" "}
           Limited {gameTerms.characterName} and <strong>{weaponCopies}</strong>{" "}
-          Limited {gameTerms.weaponName} copies with{" "}
-          <strong>{pulls.toLocaleString()}</strong> warps
+          Limited {gameTerms.weaponName} copies within{" "}
+          <strong>{totalPulls.toLocaleString()}</strong> {getPullName()}
         </CardDescription>
       </CardHeader>
 

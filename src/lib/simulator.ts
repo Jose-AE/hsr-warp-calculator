@@ -4,10 +4,13 @@ export interface ISimulatorGameSettings {
 
   weaponRate: IRate;
   weaponPity: IPity;
+
+  conversionRate: number;
 }
 
 export interface ISimulatorInput {
   pulls: number;
+  currency: number;
   characterPity: number;
   weaponPity: number;
   isWeaponGuaranteed: boolean;
@@ -52,7 +55,8 @@ export class Simulator {
     let successesfullSimulations = 0;
 
     for (let i = 0; i < input.numSimulations; i++) {
-      let pullsLeft = input.pulls;
+      let pullsLeft =
+        input.pulls + Math.floor(input.currency / this.settings.conversionRate);
 
       const charData: ISimulationData = {
         type: "character",

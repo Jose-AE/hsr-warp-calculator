@@ -4,6 +4,8 @@ export interface IGameTerms {
   limitedCategory: string; //5 star , S tier, 5★
   pullName: string; // e.g. "Wish", "Warp"
   pullConjugation: string; //es , s   (wish-es, warp-s)
+  currencyName: string; // e.g. "Primogem", "Stellar Jade"
+  currencyConjugation: string; // e.g. "s" (Primogem-s, Stellar Jade-s)
   characterName: string; // "Agent", "Character"
   weaponName: string; // "W-Engine", "Light Cone"
 }
@@ -26,6 +28,8 @@ export const GAMES: IGame[] = [
       limitedCategory: "5★",
       pullName: "Warp",
       pullConjugation: "s",
+      currencyName: "Stellar Jade",
+      currencyConjugation: "s",
       characterName: "Character",
       weaponName: "Light Cone",
     },
@@ -39,7 +43,7 @@ export const GAMES: IGame[] = [
         baseRate: 0.006,
         guaranteedAfter: 1,
         limitedOptions: 1,
-        limitedRate: 0.5,
+        limitedRate: 0.5625, //https://www.reddit.com/r/HonkaiStarRail/comments/1kxsvnx/hoyoverse_just_confirmed_that_the_coinflip_system/
       },
       weaponPity: {
         hardPity: 80,
@@ -50,8 +54,9 @@ export const GAMES: IGame[] = [
         baseRate: 0.008,
         guaranteedAfter: 1,
         limitedOptions: 1,
-        limitedRate: 0.75,
+        limitedRate: 0.78125, //https://www.reddit.com/r/HonkaiStarRail/comments/1kxsvnx/hoyoverse_just_confirmed_that_the_coinflip_system/
       },
+      conversionRate: 160,
     },
   },
   // Genshin Impact
@@ -63,6 +68,8 @@ export const GAMES: IGame[] = [
       limitedCategory: "5★",
       pullName: "Wish",
       pullConjugation: "es",
+      currencyName: "Primogem",
+      currencyConjugation: "s",
       characterName: "Character",
       weaponName: "Weapon",
     },
@@ -90,6 +97,7 @@ export const GAMES: IGame[] = [
         softPity: 64,
         softPityIncrement: 0.06,
       },
+      conversionRate: 160,
     },
   },
   // Zenless Zone Zero
@@ -102,6 +110,8 @@ export const GAMES: IGame[] = [
       characterName: "Agent",
       pullName: "Signal Search",
       pullConjugation: "es",
+      currencyName: "Polychrome",
+      currencyConjugation: "s",
       weaponName: "W-Engine",
     },
     simulationSettings: {
@@ -127,6 +137,7 @@ export const GAMES: IGame[] = [
         limitedOptions: 1,
         limitedRate: 0.75,
       },
+      conversionRate: 160,
     },
   },
 ] as const;
@@ -139,6 +150,8 @@ export const CUSTOM_GAME: IGame = {
     limitedCategory: "5★",
     pullName: "Pull",
     pullConjugation: "s",
+    currencyName: "Currency",
+    currencyConjugation: "",
     characterName: "Character",
     weaponName: "Weapon",
   },
@@ -165,5 +178,6 @@ export const CUSTOM_GAME: IGame = {
       softPity: 64,
       softPityIncrement: 0.06,
     },
+    conversionRate: 160,
   },
 } as const;

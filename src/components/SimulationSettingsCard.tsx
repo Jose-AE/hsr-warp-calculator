@@ -8,6 +8,9 @@ interface Props {
   pullName: string;
   setPulls: (value: number) => void;
   pulls: number;
+  currencyName: string;
+  setCurrency: (value: number) => void;
+  currency: number;
   setNumSimulations: (value: number) => void;
   numSimulations: number;
 }
@@ -18,6 +21,9 @@ export default function SimulationSettingsCard({
   pullName,
   pulls,
   setPulls,
+  currencyName,
+  currency,
+  setCurrency,
 }: Props) {
   return (
     <Card className="shadow-lg bg-gradient-to-br from-indigo-500/10 to-indigo-500/10 border-indigo-500/30">
@@ -29,7 +35,7 @@ export default function SimulationSettingsCard({
           Settings
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <NumberInputField
             label={pullName}
@@ -40,13 +46,21 @@ export default function SimulationSettingsCard({
           />
 
           <NumberInputField
-            label="Simulations"
-            tooltip="Increasing the number of simulations will yield more accurate results but will extend the time required for calculations. The more warps you make the longer each simulation takes. Leave default value for best results"
-            value={numSimulations}
-            onChange={setNumSimulations}
+            label={currencyName}
+            tooltip={`Number of ${currencyName} to spend`}
+            value={currency}
+            onChange={setCurrency}
             className=" border-indigo-500/30 focus:border-indigo-400"
           />
         </div>
+
+        <NumberInputField
+          label="Simulations"
+          tooltip="Increasing the number of simulations will yield more accurate results but will extend the time required for calculations. The more warps you make the longer each simulation takes. Leave default value for best results"
+          value={numSimulations}
+          onChange={setNumSimulations}
+          className=" border-indigo-500/30 focus:border-indigo-400"
+        />
       </CardContent>
     </Card>
   );
